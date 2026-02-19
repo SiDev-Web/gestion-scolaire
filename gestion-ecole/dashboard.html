@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Administration - École</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-light admin-dashboard">
+
+    <div class="container-fluid px-0">
+        <div class="row min-vh-100 g-0">
+            <aside id="sidebarMenu" class="col-12 col-lg-3 col-xl-2 px-0 sidebar bg-dark text-white offcanvas-lg offcanvas-start">
+                <div class="p-4 border-bottom border-secondary">
+                    <div class="d-flex align-items-center gap-2">
+                        <div class="rounded-circle bg-primary text-white d-inline-flex align-items-center justify-content-center" style="width:40px;height:40px; font-weight:700; letter-spacing:0.4px;">EG</div>
+                        <div>
+                            <div class="fw-bold">ECO-GESTION -by FSUT TECHNOLOGIES</div>
+                            <div class="small text-secondary">Administration</div>
+                        </div>
+                    </div>
+                </div>
+                <nav class="p-3">
+                    <div class="list-group list-group-flush">
+                        <a href="#" id="link-dashboard" class="list-group-item list-group-item-action active">Tableau de bord</a>
+                        <a href="#" id="link-eleves" class="list-group-item list-group-item-action">Élèves</a>
+                        <a href="classes.html" id="link-classes" class="list-group-item list-group-item-action">Classes</a>
+                        <a href="matieres.html" id="link-matieres" class="list-group-item list-group-item-action">Matières</a>
+                        <a href="#" id="link-profs" class="list-group-item list-group-item-action">Professeurs</a>
+                        <a href="#" id="link-absences" class="list-group-item list-group-item-action">Appel / Absences</a>
+                        <a href="#" id="link-notes" class="list-group-item list-group-item-action">Notes & Bulletins</a>
+                        <a href="#" id="link-finances" class="list-group-item list-group-item-action">Finances & Paiements</a>
+                        <a href="#" id="link-params" class="list-group-item list-group-item-action">Paramètres & Sauvegarde</a>
+                    </div>
+                </nav>
+                <div class="p-3 mt-auto">
+                    <a href="index.html" class="btn btn-outline-light w-100">Déconnexion</a>
+                </div>
+            </aside>
+
+            <main class="col-12 col-lg-9 col-xl-10 py-4">
+                <div class="d-flex flex-wrap align-items-center justify-content-between mb-4 page-header">
+                    <div>
+                        <h1 class="h3 mb-1 page-title">Espace Administration</h1>
+                        <div class="text-muted">Bienvenue, Admin</div>
+                    </div>
+                    <div class="d-flex align-items-center gap-2">
+                        <button class="btn btn-outline-secondary d-lg-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu">☰ Menu</button>
+                        <div class="global-search">
+                            <input id="global-search" class="form-control" placeholder="Recherche globale...">
+                            <div id="global-search-results" class="search-results d-none"></div>
+                        </div>
+                        <button id="theme-toggle" class="btn btn-outline-secondary">Mode sombre</button>
+                        <div class="badge bg-secondary-subtle text-secondary border">Date : <span id="current-date"></span></div>
+                    </div>
+                </div>
+
+        <section id="dashboard-section" class="mb-4">
+            <h3 class="section-title">Vue d'ensemble</h3>
+            <div class="row g-3">
+                <div class="col-12 col-md-4">
+                    <div class="card border-0 shadow-sm h-100 card-accent">
+                        <div class="card-body">
+                            <div class="text-muted">Élèves inscrits</div>
+                            <div id="total-eleves" class="display-6 fw-bold">0</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-4">
+                    <div class="card border-0 shadow-sm h-100 card-accent">
+                        <div class="card-body">
+                            <div class="text-muted">Professeurs</div>
+                            <div id="total-profs" class="display-6 fw-bold">0</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-4">
+                    <div class="card border-0 shadow-sm h-100 card-accent">
+                        <div class="card-body">
+                            <div class="text-muted">Classes</div>
+                            <div id="total-classes" class="display-6 fw-bold">0</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="dashboard-stats" class="mb-4">
+            <h3 class="section-title">Statistiques clés</h3>
+            <div class="row g-3">
+                <div class="col-12 col-md-3">
+                    <div class="card border-0 shadow-sm h-100 card-accent">
+                        <div class="card-body">
+                            <div class="text-muted">Moyenne école</div>
+                            <div id="moyenne-ecole" class="stat-value highlight">-</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-3">
+                    <div class="card border-0 shadow-sm h-100 card-accent">
+                        <div class="card-body">
+                            <div class="text-muted">Absences aujourd’hui</div>
+                            <div id="absences-aujourdhui" class="stat-value highlight">0</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-3">
+                    <div class="card border-0 shadow-sm h-100 card-accent">
+                        <div class="card-body">
+                            <div class="text-muted">Paiements en attente</div>
+                            <div id="paiements-en-attente" class="stat-value highlight">0</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-3">
+                    <div class="card border-0 shadow-sm h-100 card-accent">
+                        <div class="card-body">
+                            <div class="text-muted">Matières</div>
+                            <div id="total-matieres" class="stat-value highlight">0</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="dashboard-insights" class="mb-4">
+            <h3 class="section-title">Aperçu visuel</h3>
+            <div class="row g-3">
+                <div class="col-12 col-lg-6">
+                    <div class="card border-0 shadow-sm h-100">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center justify-content-between mb-2">
+                                <div class="text-muted">Taux de paiements validés</div>
+                                <span id="kpi-payment-rate-label" class="fw-semibold">0%</span>
+                            </div>
+                            <div class="progress" style="height: 10px;">
+                                <div id="kpi-payment-rate" class="progress-bar" style="width: 0%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-lg-6">
+                    <div class="card border-0 shadow-sm h-100">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center justify-content-between mb-2">
+                                <div class="text-muted">Présence du jour</div>
+                                <span id="kpi-attendance-label" class="fw-semibold">0%</span>
+                            </div>
+                            <div class="progress" style="height: 10px;">
+                                <div id="kpi-attendance" class="progress-bar bg-success" style="width: 0%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="activity-section" class="mb-4">
+            <h3 class="section-title">Centre d’activité</h3>
+            <div class="row g-3">
+                <div class="col-12 col-lg-7">
+                    <div class="card border-0 shadow-sm h-100">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center justify-content-between mb-2">
+                                <h4 class="h6 mb-0">Journal d’activité</h4>
+                                <span class="text-muted small">Dernières actions</span>
+                            </div>
+                            <ul id="activity-log" class="activity-list"></ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-lg-5">
+                    <div class="card border-0 shadow-sm h-100">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center justify-content-between mb-2">
+                                <h4 class="h6 mb-0">Notifications</h4>
+                                <span class="text-muted small">Alertes récentes</span>
+                            </div>
+                            <ul id="notification-list" class="notification-list"></ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="student-section" class="card student-section shadow-sm">
+            <h3 class="section-title">Ajouter / Modifier un élève</h3>
+                <form id="addStudentForm" class="bg-light border rounded p-4">
+    <h3 style="margin-top:0;">Nouvel Élève</h3>
+            <p id="student-error" style="color: red; display: none; margin-bottom:10px;"></p>
+    
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+        <div>
+            <label>Nom :</label>
+            <input type="text" id="nom" class="form-control" required placeholder="Nom de famille">
+            
+            <label>Prénom :</label>
+            <input type="text" id="prenom" class="form-control" required placeholder="Prénom">
+            
+            <label>Classe :</label>
+            <select id="classe" class="form-select" required style="margin-bottom: 10px;">
+                <option value="">-- Sélectionnez une classe --</option>
+                <option value="1ère Année">1ère Année</option>
+                <option value="2ème Année">2ème Année</option>
+                <option value="3ème Année">3ème Année</option>
+                <option value="4ème Année">4ème Année</option>
+                <option value="5ème Année">5ème Année</option>
+                <option value="6ème Année">6ème Année</option>
+                <option value="7ème Année">7ème Année</option>
+                <option value="8ème Année">8ème Année</option>
+                <option value="9ème Année">9ème Année</option>
+            </select>
+
+            <label>Genre :</label>
+            <select id="genre" class="form-select" style="margin-bottom: 10px;">
+                <option value="M">Garçon</option>
+                <option value="F">Fille</option>
+            </select>
+        </div>
+
+        <div>
+            <label>Date de Naissance :</label>
+            <input type="date" id="dateNaiss" class="form-control" required>
+
+            <label>Lieu de Naissance :</label>
+            <input type="text" id="lieuNaiss" class="form-control" placeholder="Ville/Pays">
+
+            <label>Photo de l'élève :</label>
+            <input type="file" id="photoInput" class="form-control" accept="image/*" style="margin-top: 5px;">
+            <small style="color: gray;">(Format carré recommandé)</small>
+            <div style="margin-top:10px;">
+                <img id="photoPreview" src="" alt="Aperçu" style="display:none; width:100px; height:100px; object-fit:cover; border-radius:8px; border:1px solid #ddd;" />
+            </div>
+        </div>
+    </div>
+
+            <button type="submit" class="btn btn-primary w-100 mt-3">Inscrire l'élève</button>
+</form>
+        </section>
+
+        <section class="card student-section shadow-sm">
+            <div class="d-flex flex-wrap align-items-center justify-content-between">
+            <h3 class="h5 mb-2 section-title">Liste des inscrits</h3>
+                <div class="d-flex gap-2">
+                    <input id="student-search" class="form-control" placeholder="Rechercher (nom, prénom, ID...)" style="max-width: 260px;">
+                    <button id="migrateClassesBtn" class="btn btn-outline-danger">Migrer classes</button>
+                </div>
+            </div>
+            <input type="hidden" id="student-class-filter" value="">
+            <div id="student-class-buttons" class="d-flex flex-wrap gap-2 mt-2"></div>
+            <div id="student-list-hint" class="text-muted small mt-2">Cliquez sur une classe pour afficher les élèves.</div>
+            <div id="student-migrate-result" class="small text-muted mt-1"></div>
+
+            <div id="student-table-container" class="table-responsive mt-3 d-none">
+                <table class="table table-striped align-middle">
+                    <thead>
+                        <tr>
+                            <th>Élève</th>
+                            <th>Classe</th>
+                            <th>ID</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="studentTableBody"></tbody>
+                </table>
+            </div>
+
+            <div class="d-flex justify-content-between align-items-center mt-2">
+                <div id="student-pagination-info" class="text-muted small"></div>
+                <div class="btn-group">
+                    <button id="student-prev" class="btn btn-outline-secondary btn-sm">Précédent</button>
+                    <button id="student-next" class="btn btn-outline-secondary btn-sm">Suivant</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="professeurs-section" class="card shadow-sm" style="display: none;">
+            <h3 class="section-title">Gestion des Professeurs</h3>
+            <form id="addProfForm" class="row g-2">
+                <div class="col-12 col-md-3">
+                    <input type="text" id="profNom" class="form-control" placeholder="Nom du Prof" required>
+                </div>
+                <div class="col-12 col-md-3">
+                    <input type="text" id="profMatiere" class="form-control" placeholder="Matière (ex: Maths)" required>
+                </div>
+                <div class="col-12 col-md-4">
+                    <input type="text" id="profHoraires" class="form-control" placeholder="Horaires (ex: Lundi 8h-10h, Jeudi 14h)" required>
+                </div>
+                <div class="col-12 col-md-2">
+                    <button type="submit" class="btn btn-success w-100">Ajouter</button>
+                </div>
+            </form>
+            
+            <table class="table table-striped" style="margin-top: 20px;">
+                <thead>
+                    <tr>
+                        <th>Nom</th>
+                        <th>Matière</th>
+                        <th>Horaires de cours</th> <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="profTableBody">
+                    </tbody>
+            </table>
+        </section>
+
+    <section id="absences-section" class="card shadow-sm" style="display: none;">
+    <div style="border-bottom: 2px solid #eee; padding-bottom: 20px; margin-bottom: 20px;">
+        <h3 class="section-title">Faire l'appel du jour</h3>
+        <div style="display: flex; gap: 10px; margin-bottom: 15px;">
+            <input type="date" id="date-appel" class="form-control" style="max-width: 200px;">
+            <button onclick="preparerAppel()" class="btn btn-primary">Charger la liste</button>
+            <button id="abs-open-all" class="btn btn-outline-secondary">Tout ouvrir</button>
+            <button id="abs-close-all" class="btn btn-outline-secondary">Tout fermer</button>
+        </div>
+        
+        <div id="absenceClassContainer" class="mt-2"></div>
+        <button onclick="enregistrerAppel()" class="btn btn-success w-100 mt-3">Enregistrer l'appel</button>
+    </div>
+
+    <div>
+        <h3 class="section-title">Consulter l'historique</h3>
+        <div style="display: flex; gap: 10px; align-items: center;">
+            <label>Voir les absents du :</label>
+            <input type="date" id="date-historique" class="form-control" style="max-width: 200px;">
+            <button onclick="voirHistorique()" class="btn btn-secondary">Rechercher</button>
+        </div>
+        <div id="resultat-historique" style="margin-top: 15px; padding: 10px; background: #f9f9f9; border-radius: 4px;">
+            <em>Sélectionnez une date pour voir les absents.</em>
+        </div>
+    </div>
+</section>
+    <section id="notes-section" class="card shadow-sm" style="display: none;">
+    <h3 class="section-title">Gestion des Bulletins</h3>
+    
+    <div class="bg-light border rounded p-3 mb-3">
+        <div class="row g-2">
+            <div class="col-12 col-md-5">
+                <label for="select-classe-note"><strong>Choisir une classe :</strong></label>
+                <select id="select-classe-note" class="form-select mt-2">
+                    <option value="">-- Sélectionnez une classe --</option>
+                </select>
+            </div>
+            <div class="col-12 col-md-7">
+                <label for="select-eleve-note"><strong>Choisir un élève :</strong></label>
+                <select id="select-eleve-note" onchange="chargerBulletin()" class="form-select mt-2">
+                    <option value="">-- Sélectionnez un élève --</option>
+                </select>
+            </div>
+        </div>
+        <div class="row g-2 mt-2">
+            <div class="col-6 col-md-3">
+                <label for="note-weight-devoir" class="small text-muted">Poids Devoirs (%)</label>
+                <input id="note-weight-devoir" type="number" class="form-control" value="40" min="0" max="100">
+            </div>
+            <div class="col-6 col-md-3">
+                <label for="note-weight-compo" class="small text-muted">Poids Compositions (%)</label>
+                <input id="note-weight-compo" type="number" class="form-control" value="60" min="0" max="100">
+            </div>
+            <div class="col-12 col-md-6 d-flex align-items-end">
+                <div class="text-muted small">La note de trimestre est calculée automatiquement.</div>
+            </div>
+        </div>
+    </div>
+
+    <div id="bulletin-content" style="display: none;">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Matière</th>
+                    <th>Devoirs</th>
+                    <th>Compositions</th>
+                    <th>Trimestre</th>
+                    <th>Moyenne</th>
+                </tr>
+            </thead>
+            <tbody id="notesTableBody">
+                </tbody>
+            <tfoot>
+                <tr style="background-color: #ecf0f1; font-weight: bold;">
+                    <td colspan="2" style="text-align: right;">MOYENNE GÉNÉRALE :</td>
+                    <td id="moyenne-generale" style="color: #2c3e50; font-size: 1.2em;">-</td>
+                </tr>
+            </tfoot>
+        </table>
+        <div style="margin-top: 20px; margin-bottom: 20px;">
+    <label for="avis-conseil"><strong>Appréciation / Remarques du Professeur principal :</strong></label>
+    <textarea id="avis-conseil" rows="4" class="form-control" placeholder="Ex: Élève sérieux, des progrès notables en mathématiques..."></textarea>
+</div>
+        <button onclick="sauvegarderNotes()" class="btn btn-primary w-100 mt-3">Enregistrer les notes</button>
+        <button onclick="publierBulletin()" class="btn btn-success w-100 mt-2">Publier le bulletin</button>
+        <button onclick="imprimerBulletin()" class="btn btn-outline-secondary w-100 mt-2">Générer le bulletin (PDF/Impression)</button>
+    </div>
+</section>
+        <section id="finances-section" style="display: none;">
+            <h2 class="h4 mb-3 section-title">Suivi des Paiements</h2>
+            <div class="row g-3 mb-3">
+                <div class="col-12 col-md-6">
+                    <div class="card border-0 shadow-sm h-100">
+                        <div class="card-body">
+                            <div class="text-muted">Total encaissé</div>
+                            <div id="finance-total" class="display-6 fw-bold">0 FCFA</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-6">
+                    <div class="card border-0 shadow-sm h-100">
+                        <div class="card-body">
+                            <div class="text-muted">Dernier paiement</div>
+                            <div id="finance-dernier" class="fw-semibold">Aucun</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    
+    <div class="card shadow-sm border-0">
+        <div class="d-flex flex-wrap align-items-center justify-content-between">
+            <h3 class="h5 mb-2 section-title">Historique des transactions</h3>
+            <div class="d-flex gap-2">
+                <input id="finance-search" class="form-control" placeholder="Rechercher (élève, payeur, type, date...)" style="max-width: 320px;">
+                <select id="finance-filter" class="form-select" style="max-width: 180px;">
+                    <option value="">Tous</option>
+                    <option value="Validé">Validé</option>
+                    <option value="En attente">En attente</option>
+                </select>
+                <button id="finance-export" class="btn btn-outline-primary">Exporter CSV</button>
+            </div>
+        </div>
+        <table class="table table-striped mt-3">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Élève</th>
+                    <th>Payeur</th>
+                    <th>Type</th>
+                    <th>Montant</th>
+                    <th>Réf. Transaction</th>
+                </tr>
+            </thead>
+            <tbody id="financeTableBody"></tbody>
+        </table>
+        <div class="d-flex justify-content-between align-items-center mt-2">
+            <div id="finance-pagination-info" class="text-muted small"></div>
+            <div class="btn-group">
+                <button id="finance-prev" class="btn btn-outline-secondary btn-sm">Précédent</button>
+                <button id="finance-next" class="btn btn-outline-secondary btn-sm">Suivant</button>
+            </div>
+        </div>
+    </div>
+</section>
+    <section id="params-section" class="card shadow-sm" style="display: none;">
+        <h3 class="mb-1 section-title">Sauvegarde et Restauration</h3>
+        <p class="text-muted">Conservez une copie de vos données ou restaurez une sauvegarde précédente.</p>
+
+        <div class="row g-3 mt-2">
+            <div class="col-12 col-md-6">
+                <div class="border border-primary border-2 rounded p-4 text-center h-100 bg-light">
+                    <h4 class="text-primary">Sauvegarder les données</h4>
+                    <p class="text-muted">Télécharge un fichier de secours sur votre ordinateur.</p>
+                    <button onclick="exporterDonnees()" class="btn btn-primary">Télécharger ma Sauvegarde</button>
+                </div>
+            </div>
+
+            <div class="col-12 col-md-6">
+                <div class="border border-success border-2 rounded p-4 text-center h-100 bg-light">
+                    <h4 class="text-success">Restaurer les données</h4>
+                    <p class="text-muted">Chargez un fichier de sauvegarde précédent.</p>
+                    <input type="file" id="file-input" class="d-none" onchange="importerDonnees(this)">
+                    <button onclick="document.getElementById('file-input').click()" class="btn btn-success">Choisir un fichier...</button>
+                </div>
+            </div>
+        </div>
+    
+        <div class="mt-4 pt-3 border-top">
+            <h4 class="text-danger section-title">Zone de Danger</h4>
+            <button onclick="reinitialiserTout()" class="btn btn-outline-danger">Tout effacer (Remise à zéro)</button>
+        </div>
+    </section>
+<section id="parent-section" class="parent-section" style="display: none;">
+    <div class="parent-header">
+        <div>
+            <p class="parent-eyebrow">Espace Parents</p>
+            <h1 class="h4 mb-1">Tableau de suivi</h1>
+            <p id="parent-student-name" class="mb-0 fw-semibold">--</p>
+        </div>
+        <div class="d-flex align-items-center gap-2">
+            <button onclick="deconnexion()" class="btn btn-outline-danger">Se déconnecter</button>
+        </div>
+    </div>
+
+    <div class="parent-grid">
+        <div class="parent-left">
+            <div class="card parent-card">
+                <div class="card-body">
+                    <div class="d-flex align-items-center justify-content-between mb-3">
+                        <h3 class="h6 mb-0">Résumé académique</h3>
+                        <span class="text-muted small">Vue rapide</span>
+                    </div>
+                    <div class="parent-kpi-grid">
+                        <div class="parent-kpi">
+                            <div class="text-muted">Moyenne générale</div>
+                            <div id="parent-moyenne" class="stat-value highlight">-</div>
+                        </div>
+                        <div class="parent-kpi">
+                            <div class="text-muted">Absences</div>
+                            <div id="parent-absences" class="stat-value highlight">0</div>
+                        </div>
+                    </div>
+                    <div id="parent-appreciations" class="parent-note mt-3">
+                        <strong>Appréciation :</strong> <span>Aucune remarque.</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card parent-card">
+                <div class="card-body">
+                    <div class="d-flex align-items-center justify-content-between mb-2">
+                        <h3 class="h6 mb-0">Conseils & suivi</h3>
+                        <span class="text-muted small">Informations utiles</span>
+                    </div>
+                    <ul class="text-muted small mb-0">
+                        <li>Vérifiez les absences et contactez l'administration si besoin.</li>
+                        <li>Suivez les notes pour anticiper les besoins de soutien.</li>
+                        <li>Consultez l’historique des paiements ci‑dessous.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="card parent-card">
+                <div class="card-body">
+                    <div class="d-flex align-items-center justify-content-between mb-2">
+                        <h3 class="h6 mb-0">Paiements & reçus</h3>
+                        <span class="text-muted small">Historique personnel</span>
+                    </div>
+                    <div class="parent-payment-grid">
+                        <div class="parent-payment-info">
+                            <h4 class="h6">Régler la scolarité</h4>
+                            <p class="text-muted small mb-2">Effectuez votre paiement au numéro :</p>
+                            <div class="parent-payment-number">+223 00 00 00 00</div>
+                            <div class="parent-tarifs">
+                                <div>Mensuel <strong>15.000 FCFA</strong></div>
+                                <div>Trimestriel <strong>40.000 FCFA</strong></div>
+                                <div>Annuel <strong>150.000 FCFA</strong></div>
+                            </div>
+                        </div>
+
+                        <form id="paymentForm" onsubmit="effectuerPaiementParent(event)">
+                            <label>Type de paiement :</label>
+                            <select id="pay-type" required class="form-select mb-3">
+                                <option value="Mensuel">Mensuel (15.000 FCFA)</option>
+                                <option value="Trimestriel">Trimestriel (40.000 FCFA)</option>
+                                <option value="Annuel">Annuel (150.000 FCFA)</option>
+                            </select>
+
+                            <label>Nom & Prénom du Payeur :</label>
+                            <input type="text" id="pay-nom" placeholder="Ex: M. Traoré" required class="form-control mb-3">
+
+                            <label>Votre Numéro de Téléphone (Celui qui a envoyé l'argent) :</label>
+                            <input type="tel" id="pay-tel" placeholder="Ex: 77 00 00 00" required class="form-control mb-3">
+                            
+                            <button type="submit" class="btn btn-success w-100">
+                                Valider mon paiement
+                            </button>
+                        </form>
+                    </div>
+
+                    <div class="parent-payment-history">
+                        <h4 class="h6">Vos derniers paiements</h4>
+                        <ul id="parent-payment-history" class="payment-history"></ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="parent-right">
+            <div class="card parent-card">
+                <div class="card-body">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <h3 class="h5 section-title">Bulletin de notes</h3>
+                        <span class="text-muted small">Données trimestrielles</span>
+                    </div>
+                    <div class="table-responsive mt-3">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Matière</th>
+                                    <th>Notes</th>
+                                    <th>Moyenne</th>
+                                </tr>
+                            </thead>
+                            <tbody id="parent-notes-body"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card parent-card parent-bulletin-summary">
+                <div class="card-body">
+                    <div class="d-flex align-items-center justify-content-between mb-2">
+                        <h3 class="h6 mb-0">Synthèse</h3>
+                        <span class="text-muted small">Performance trimestrielle</span>
+                    </div>
+                    <p class="text-muted mb-2">Suivez la progression globale et préparez les échanges avec l'équipe pédagogique.</p>
+                    <div class="parent-summary-list">
+                        <div>
+                            <span class="text-muted">Moyenne actuelle</span>
+                            <div class="fw-semibold" id="parent-summary-average">--</div>
+                        </div>
+                        <div>
+                            <span class="text-muted">Absences cumulées</span>
+                            <div class="fw-semibold" id="parent-summary-absences">--</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<div id="modal-dossier" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 1000; justify-content: center; align-items: center;">
+    <div style="background: white; width: 500px; padding: 20px; border-radius: 10px; position: relative; text-align: center;">
+        <button onclick="fermerDossier()" style="position: absolute; top: 10px; right: 10px; background: red; color: white; border: none; cursor: pointer;">X</button>
+        
+        <img id="dossier-photo" src="" alt="Photo" style="width: 120px; height: 120px; object-fit: cover; border-radius: 50%; border: 4px solid #3498db; margin-bottom: 15px;">
+        
+        <h2 id="dossier-nom" style="margin: 0; color: #2c3e50;">--</h2>
+        <p id="dossier-classe" style="color: #7f8c8d; font-weight: bold;">--</p>
+        
+        <div style="text-align: left; background: #f1f2f6; padding: 15px; border-radius: 8px; margin-top: 20px;">
+            <p><strong>Né(e) le :</strong> <span id="dossier-date">--</span></p>
+            <p><strong>Lieu de naissance :</strong> <span id="dossier-lieu">--</span></p>
+            <p><strong>Genre :</strong> <span id="dossier-genre">--</span></p>
+            <p><strong>Identifiant (ID) :</strong> <span id="dossier-id" style="font-family: monospace; color: orange;">--</span></p>
+        </div>
+
+        <button onclick="imprimerDossier()" class="btn-edit" style="margin-top: 20px; width: 100%;">Imprimer la Fiche Élève</button>
+    </div>
+</div>
+    </main>
+
+    <div id="global-confirm-modal" class="reset-modal" role="dialog" aria-modal="true">
+        <div class="modal-box">
+            <h3 id="global-confirm-title">Confirmer</h3>
+            <div id="global-confirm-body" class="modal-body"></div>
+            <div class="modal-actions">
+                <button id="global-confirm-cancel" class="btn-edit">Annuler</button>
+                <button id="global-confirm-ok" class="btn-add">Confirmer</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="onboarding-modal" class="reset-modal" role="dialog" aria-modal="true">
+        <div class="modal-box">
+            <h3>Bienvenue sur ECO-GESTION</h3>
+            <div class="modal-body">
+                <p>Voici les essentiels pour bien démarrer :</p>
+                <ul>
+                    <li>Ajoutez vos classes et matières depuis les menus dédiés.</li>
+                    <li>Inscrivez les élèves et renseignez leurs informations.</li>
+                    <li>Gérez les absences, notes et paiements depuis le tableau de bord.</li>
+                </ul>
+                <p class="text-muted small">Vous pouvez fermer ce guide et revenir à tout moment.</p>
+            </div>
+            <div class="modal-actions">
+                <button id="onboarding-close" class="btn-add">Commencer</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="toast-container" class="toast-container"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
